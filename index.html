@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-black text-white selection:bg-white/20 selection:text-white">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asme — Know it all</title>
+
+  <!-- Google Fonts: Instrument Serif (Regular & Italic) & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Baseline Performance & Typography */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000000;
+      color: #ffffff;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .font-instrument {
+      font-family: 'Instrument Serif', serif;
+    }
+
+    /* Precision Liquid Glass Effect */
+    .liquid-glass {
+      background: rgba(255, 255, 255, 0.015);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: none;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12), 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(0); /* Hardware acceleration */
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0.15) 20%,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0.15) 80%,
+        rgba(255, 255, 255, 0.45) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* Framer-like Scroll Reveal Classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.is-visible,
+    .reveal-left.is-visible,
+    .reveal-right.is-visible {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    /* Video transitions */
+    #hero-video {
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-black text-white relative">
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 1: HERO CONTAINER                                                 -->
+  <!-- ========================================================================= -->
+  <section class="min-h-screen relative flex flex-col justify-between overflow-hidden bg-black select-none">
+    
+    <!-- Seamless Looping Hero Video -->
+    <video
+      id="hero-video"
+      class="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none"
+      muted
+      autoplay
+      playsinline
+      preload="auto"
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4">
+    </video>
+
+    <!-- Ambient Shadow Overlays for Depth -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black pointer-events-none z-[1]"></div>
+    <div class="absolute inset-0 bg-black/30 pointer-events-none z-[1]"></div>
+
+    <!-- Navigation Bar -->
+    <header class="relative z-20 px-6 py-6 w-full">
+      <nav class="liquid-glass rounded-full max-w-5xl mx-auto px-6 py-3 flex items-center justify-between transition-all duration-300 hover:bg-white/[0.03]">
+        
+        <!-- Left: Brand + Nav Links -->
+        <div class="flex items-center">
+          <a href="#" class="flex items-center gap-2.5 text-white group cursor-pointer focus:outline-none">
+            <i data-lucide="globe" class="w-6 h-6 text-white transition-transform duration-500 group-hover:rotate-45"></i>
+            <span class="font-semibold text-lg tracking-tight text-white">Asme</span>
+          </a>
+
+          <div class="hidden md:flex items-center gap-8 ml-10">
+            <a href="#about" class="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200">Features</a>
+            <a href="#featured" class="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200">Pricing</a>
+            <a href="#services" class="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200">About</a>
+          </div>
+        </div>
+
+        <!-- Right: Auth Buttons -->
+        <div class="flex items-center gap-5">
+          <button class="text-white text-sm font-medium hover:text-white/80 transition-colors duration-200 cursor-pointer">
+            Sign Up
+          </button>
+          <button class="liquid-glass rounded-full px-6 py-2 text-white text-sm font-medium hover:bg-white/10 active:scale-95 transition-all duration-200 cursor-pointer">
+            Login
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Center Content -->
+    <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-12 text-center md:-translate-y-[8%] lg:-translate-y-[10%]">
+      
+      <!-- Headline -->
+      <h1 class="font-instrument text-6xl sm:text-7xl md:text-8xl lg:text-9xl text-white tracking-tight leading-[1.05] mb-8 font-normal">
+        Know it then <em class="italic font-normal">all</em>.
+      </h1>
+
+      <!-- Email Input Form -->
+      <div class="max-w-xl w-full mx-auto mb-8">
+        <form id="newsletter-form" onsubmit="event.preventDefault(); handleSubscribe();" class="liquid-glass rounded-full pl-6 pr-2 py-2 flex items-center gap-3 transition-all duration-300 focus-within:ring-1 focus-within:ring-white/40">
+          <input
+            id="newsletter-email"
+            type="email"
+            required
+            placeholder="Enter your email"
+            class="w-full bg-transparent text-white placeholder:text-white/40 text-sm focus:outline-none"
+          />
+          <button
+            type="submit"
+            aria-label="Submit Email"
+            class="bg-white hover:bg-neutral-200 active:scale-95 text-black rounded-full p-3 transition-transform duration-200 flex-shrink-0 cursor-pointer flex items-center justify-center">
+            <i data-lucide="arrow-right" class="w-5 h-5 stroke-[2.2]"></i>
+          </button>
+        </form>
+        <p id="subscribe-feedback" class="text-xs text-white/60 mt-2 h-4 transition-opacity duration-300 opacity-0"></p>
+      </div>
+
+      <!-- Subtitle -->
+      <p class="text-white/80 text-sm md:text-base leading-relaxed max-w-lg mx-auto mb-8 px-4 font-light">
+        Stay updated with the latest news and insights. Subscribe to our newsletter today and never miss out on exciting updates.
+      </p>
+
+      <!-- Manifesto Button -->
+      <div>
+        <a href="#about" class="liquid-glass inline-flex items-center rounded-full px-8 py-3 text-white text-sm font-medium hover:bg-white/10 active:scale-95 transition-all duration-200 cursor-pointer">
+          Read the Manifesto
+        </a>
+      </div>
+    </main>
+
+    <!-- Social Links Footer -->
+    <footer class="relative z-10 flex justify-center items-center gap-4 pb-10">
+      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="liquid-glass rounded-full p-3.5 text-white/80 hover:text-white hover:bg-white/10 active:scale-90 transition-all duration-200">
+        <i data-lucide="instagram" class="w-5 h-5"></i>
+      </a>
+      <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="liquid-glass rounded-full p-3.5 text-white/80 hover:text-white hover:bg-white/10 active:scale-90 transition-all duration-200">
+        <i data-lucide="twitter" class="w-5 h-5"></i>
+      </a>
+      <a href="#" aria-label="Global Network" class="liquid-glass rounded-full p-3.5 text-white/80 hover:text-white hover:bg-white/10 active:scale-90 transition-all duration-200">
+        <i data-lucide="globe" class="w-5 h-5"></i>
+      </a>
+    </footer>
+  </section>
+
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 2: ABOUT SECTION                                                  -->
+  <!-- ========================================================================= -->
+  <section id="about" class="bg-black pt-32 md:pt-44 pb-12 md:pb-20 px-6 relative overflow-hidden">
+    <!-- Subtle Radial Gradient Overlay -->
+    <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.035)_0%,_transparent_70%)]"></div>
+
+    <div class="max-w-6xl mx-auto relative z-10">
+      <!-- Section Label -->
+      <div class="reveal mb-6" style="transition-delay: 0.05s;">
+        <span class="text-white/40 text-xs md:text-sm tracking-[0.25em] uppercase font-medium">About Us</span>
+      </div>
+
+      <!-- Section Heading -->
+      <h2 class="reveal text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white font-normal leading-[1.12] tracking-tight max-w-5xl" style="transition-delay: 0.15s;">
+        Pioneering then <span class="font-instrument italic text-white/60">ideas</span> for
+        <br class="hidden md:inline" />
+        <span class="font-instrument italic text-white/60">minds that then create, build, and inspire.</span>
+      </h2>
+    </div>
+  </section>
+
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 3: FEATURED VIDEO                                                 -->
+  <!-- ========================================================================= -->
+  <section id="featured" class="bg-black pt-6 md:pt-10 pb-20 md:pb-36 px-6 relative overflow-hidden">
+    <div class="max-w-6xl mx-auto relative z-10">
+      
+      <!-- Video Container with Aspect Ratio and Rounded Edges -->
+      <div class="reveal rounded-3xl overflow-hidden aspect-video relative group shadow-2xl border border-white/[0.08]" style="transition-duration: 0.95s;">
+        <video
+          class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+          muted
+          autoplay
+          loop
+          playsinline
+          preload="auto"
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260402_054547_9875cfc5-155a-4229-8ec8-b7ba7125cbf8.mp4">
+        </video>
+
+        <!-- Gradient Vignette -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
+
+        <!-- Floating Glass Bottom Overlay -->
+        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-6 z-10">
+          
+          <!-- Card Info -->
+          <div class="liquid-glass rounded-2xl p-6 md:p-8 max-w-lg shadow-xl backdrop-blur-md">
+            <span class="inline-block text-white/50 text-[11px] tracking-[0.2em] uppercase font-semibold mb-3">Our Approach</span>
+            <p class="text-white/90 text-sm md:text-base leading-relaxed font-light">
+              We believe in the power of curiosity-driven exploration. Every project starts with a question, and every answer opens a new door to innovation.
+            </p>
+          </div>
+
+          <!-- Action Button -->
+          <button class="liquid-glass self-start md:self-end rounded-full px-8 py-3 text-white text-sm font-medium hover:bg-white/10 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer whitespace-nowrap shadow-lg">
+            Explore more
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 4: PHILOSOPHY / INNOVATION x VISION                              -->
+  <!-- ========================================================================= -->
+  <section class="bg-black py-24 md:py-36 px-6 relative overflow-hidden border-t border-white/[0.06]">
+    <div class="max-w-6xl mx-auto relative z-10">
+      
+      <!-- Heading -->
+      <h2 class="reveal text-5xl md:text-7xl lg:text-8xl text-white tracking-tight mb-16 md:mb-24 font-normal" style="transition-delay: 0.1s;">
+        Innovation then <span class="font-instrument italic text-white/40 font-normal">x</span> Vision
+      </h2>
+
+      <!-- Two-Column Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center">
+        
+        <!-- Left Column: Video -->
+        <div class="reveal-left rounded-3xl overflow-hidden aspect-[4/3] relative shadow-2xl border border-white/[0.08]" style="transition-delay: 0.15s;">
+          <video
+            class="w-full h-full object-cover"
+            muted
+            autoplay
+            loop
+            playsinline
+            preload="auto"
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4">
+          </video>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+        </div>
+
+        <!-- Right Column: Text Blocks -->
+        <div class="reveal-right flex flex-col gap-8 md:gap-10" style="transition-delay: 0.25s;">
+          
+          <!-- Block 1 -->
+          <div>
+            <span class="inline-block text-white/40 text-xs tracking-[0.2em] uppercase font-semibold mb-4">Choose your space</span>
+            <p class="text-white/70 text-base md:text-lg leading-relaxed font-light">
+              Every meaningful breakthrough begins at the intersection of disciplined strategy and remarkable creative vision. We operate at that crossroads, turning bold thinking into tangible outcomes that move people and reshape industries.
+            </p>
+          </div>
+
+          <!-- Divider -->
+          <div class="w-full h-px bg-white/10"></div>
+
+          <!-- Block 2 -->
+          <div>
+            <span class="inline-block text-white/40 text-xs tracking-[0.2em] uppercase font-semibold mb-4">Shape the future</span>
+            <p class="text-white/70 text-base md:text-lg leading-relaxed font-light">
+              We believe that the best work emerges when curiosity meets conviction. Our process is designed to uncover hidden opportunities and translate them into experiences that resonate long after the first impression.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 5: SERVICES / WHAT WE DO                                          -->
+  <!-- ========================================================================= -->
+  <section id="services" class="bg-black py-28 md:py-40 px-6 relative overflow-hidden border-t border-white/[0.06]">
+    <!-- Radial Glow Background -->
+    <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.025)_0%,_transparent_65%)]"></div>
+
+    <div class="max-w-6xl mx-auto relative z-10">
+      
+      <!-- Header Row -->
+      <div class="reveal flex items-end justify-between mb-12 md:mb-16">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl text-white tracking-tight font-normal">
+          What we do
+        </h2>
+        <span class="hidden md:inline-block text-white/40 text-sm tracking-[0.2em] uppercase font-medium">
+          Our services
+        </span>
+      </div>
+
+      <!-- Two Card Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Service Card 1 -->
+        <article class="reveal liquid-glass rounded-3xl overflow-hidden group cursor-pointer transition-all duration-500 hover:border-white/30" style="transition-delay: 0.1s;">
+          <div class="aspect-video overflow-hidden relative">
+            <video
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              muted
+              autoplay
+              loop
+              playsinline
+              preload="auto"
+              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"></div>
+          </div>
+
+          <div class="p-6 md:p-8">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-white/40 text-xs tracking-[0.2em] uppercase font-semibold">Strategy</span>
+              <div class="liquid-glass rounded-full p-2.5 text-white/80 group-hover:text-white group-hover:rotate-45 group-hover:scale-110 transition-all duration-300">
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <h3 class="text-white text-xl md:text-2xl font-medium tracking-tight mb-3">
+              Research &amp; Insight
+            </h3>
+            <p class="text-white/50 text-sm md:text-base leading-relaxed font-light">
+              We dig deep into data, culture, and human behavior to surface the insights that drive meaningful, lasting change.
+            </p>
+          </div>
+        </article>
+
+        <!-- Service Card 2 -->
+        <article class="reveal liquid-glass rounded-3xl overflow-hidden group cursor-pointer transition-all duration-500 hover:border-white/30" style="transition-delay: 0.25s;">
+          <div class="aspect-video overflow-hidden relative">
+            <video
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              muted
+              autoplay
+              loop
+              playsinline
+              preload="auto"
+              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260324_151826_c7218672-6e92-402c-9e45-f1e0f454bdc4.mp4">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"></div>
+          </div>
+
+          <div class="p-6 md:p-8">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-white/40 text-xs tracking-[0.2em] uppercase font-semibold">Craft</span>
+              <div class="liquid-glass rounded-full p-2.5 text-white/80 group-hover:text-white group-hover:rotate-45 group-hover:scale-110 transition-all duration-300">
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <h3 class="text-white text-xl md:text-2xl font-medium tracking-tight mb-3">
+              Design &amp; Execution
+            </h3>
+            <p class="text-white/50 text-sm md:text-base leading-relaxed font-light">
+              From concept to launch, we obsess over every detail to deliver experiences that feel effortless and look extraordinary.
+            </p>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT: VIDEO FADE ENGINE + SCROLL REVEALS + INTERACTIONS            -->
+  <!-- ========================================================================= -->
+  <script>
+    // Initialize Lucide Vector Icons
+    lucide.createIcons();
+
+    /* -------------------------------------------------------------------------
+     * 1. HERO VIDEO SEAMLESS FADE LOOP (requestAnimationFrame Vanilla JS)
+     * ------------------------------------------------------------------------- */
+    const heroVideo = document.getElementById('hero-video');
+    let isFadingOut = false;
+    let fadeAnimationId = null;
+
+    function animateOpacity(element, from, to, duration, onComplete) {
+      if (fadeAnimationId) cancelAnimationFrame(fadeAnimationId);
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Linear interpolation with slight smooth-step
+        const currentOpacity = from + (to - from) * progress;
+        element.style.opacity = currentOpacity;
+
+        if (progress < 1) {
+          fadeAnimationId = requestAnimationFrame(step);
+        } else {
+          element.style.opacity = to;
+          fadeAnimationId = null;
+          if (onComplete) onComplete();
+        }
+      }
+      fadeAnimationId = requestAnimationFrame(step);
+    }
+
+    if (heroVideo) {
+      // 1. Initial play & fade in over 500ms
+      heroVideo.addEventListener('canplay', () => {
+        heroVideo.play().catch(() => {});
+        const currentOp = parseFloat(heroVideo.style.opacity) || 0;
+        if (currentOp === 0) {
+          animateOpacity(heroVideo, 0, 1, 500);
+        }
+      }, { once: true });
+
+      // 2. Monitor time remaining for fade out
+      heroVideo.addEventListener('timeupdate', () => {
+        if (!heroVideo.duration) return;
+        const remaining = heroVideo.duration - heroVideo.currentTime;
+
+        if (remaining <= 0.55 && !isFadingOut) {
+          isFadingOut = true;
+          const currentOp = parseFloat(heroVideo.style.opacity) || 1;
+          animateOpacity(heroVideo, currentOp, 0, 500);
+        }
+      });
+
+      // 3. Loop reset with 100ms black interval
+      heroVideo.addEventListener('ended', () => {
+        heroVideo.style.opacity = '0';
+        setTimeout(() => {
+          heroVideo.currentTime = 0;
+          heroVideo.play().then(() => {
+            isFadingOut = false;
+            animateOpacity(heroVideo, 0, 1, 500);
+          }).catch(() => {
+            isFadingOut = false;
+          });
+        }, 100);
+      });
+    }
+
+    /* -------------------------------------------------------------------------
+     * 2. INTERSECTION OBSERVER FOR FRAMER-MOTION SMOOTH ENTRANCES
+     * ------------------------------------------------------------------------- */
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target); // once: true equivalent
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.12,
+      rootMargin: '-50px'
+    });
+
+    revealElements.forEach(el => observer.observe(el));
+
+    /* -------------------------------------------------------------------------
+     * 3. CLIENT INTERACTIONS & NEWSLETTER FEEDBACK
+     * ------------------------------------------------------------------------- */
+    function handleSubscribe() {
+      const emailInput = document.getElementById('newsletter-email');
+      const feedback = document.getElementById('subscribe-feedback');
+      
+      if (!emailInput.checkValidity()) {
+        emailInput.reportValidity();
+        return;
+      }
+
+      const emailVal = emailInput.value.trim();
+      feedback.textContent = `Thank you! ${emailVal} has been subscribed.`;
+      feedback.classList.remove('opacity-0');
+      feedback.classList.add('opacity-100');
+      emailInput.value = '';
+
+      setTimeout(() => {
+        feedback.classList.remove('opacity-100');
+        feedback.classList.add('opacity-0');
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
